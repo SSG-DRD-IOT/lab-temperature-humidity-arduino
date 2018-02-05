@@ -8,8 +8,8 @@ You will write code in C/C++ and measure temperature in Celsius and relative hum
 
 ## Setup the temperature & humidity sensor and LCD screen
 
-:arrow_forward: Connect **Grove Temperature & Humidity Sensor** to any **I<sup>2</sup>C** port of the Grove Base Shield.
-:arrow_forward: Connect the **LCD screen** to another **I<sup>2</sup>C** port.
+![](./images/action.png) Connect **Grove Temperature & Humidity Sensor** to any **I<sup>2</sup>C** port of the Grove Base Shield.
+![](./images/action.png) Connect the **LCD screen** to another **I<sup>2</sup>C** port.
 
 ## **I<sup>2</sup>C** using the Arduino API
 
@@ -28,7 +28,7 @@ Update <span class="icon file">temperature</span> to read the temperature & humi
 
 *  The code should look like this:
 
-``` c
+```c
 #include "th02.hpp"
 #include "upm_utilities.h"
 
