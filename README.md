@@ -202,6 +202,67 @@ main() {
 }
 ```
 
+## The same program in Arduino style
+```c++
+#include "th02.hpp"
+#include "jhd1313m1.hpp"
+
+upm::Jhd1313m1 lcd(0, 0x3e, 0x62);
+upm::TH02 sensor;
+
+void setup() {
+
+  // Set the subplatform for the shield
+  mraa_add_subplatform(MRAA_GROVEPI, "0");
+}
+
+void loop() {
+  // set the LCD parameters
+
+  static char string2[20];
+  static uint8_t rgb[7][3] = {
+            {0xd1, 0x00, 0x00},
+            {0xff, 0x66, 0x22},
+            {0xff, 0xda, 0x21},
+            {0x33, 0xdd, 0x00},
+            {0x11, 0x33, 0xcc},
+            {0x22, 0x00, 0x66},
+            {0x33, 0x00, 0x44}};
+
+  // Read the temperature and humidity printing both the Celsius and
+  // equivalent Fahrenheit temperature and Relative Humidity, waiting two seconds between readings
+  
+  float celsius = sensor.getTemperature();
+  float fahrenheit = (celsius * 9.0 / 5.0 + 32.0);
+  float humidity = sensor.getHumidity();
+  printf("%2.3f Celsius, or %2.3f Fahrenheit\n", celsius, fahrenheit);
+  printf("%2.3f%% Relative Humidity\n", humidity);
+
+  snprintf(string2, sizeof(string2), "%2.1f%cF %2.1f%cC", fahrenheit, 223, celsius, 223);
+  // Alternate rows on the LCD
+  lcd.setCursor(0, 0);
+  lcd.write("Temperature:");
+  lcd.setCursor(1, 0);
+  lcd.write(string2);
+  // Change the color
+  uint8_t r = rgb[(int)fahrenheit%7][0];
+  uint8_t g = rgb[(int)fahrenheit%7][1];
+  uint8_t b = rgb[(int)fahrenheit%7][2];
+  lcd.setColor(r, g, b);
+  delay(5000);
+  lcd.clear();
+
+  snprintf(string2, sizeof(string2), "%2.1f%%", humidity);
+  // Alternate rows on the LCD
+  lcd.setCursor(0, 0);
+  lcd.write("Humidity:");
+  lcd.setCursor(1, 0);
+  lcd.write(string2);
+  delay(5000);
+  lcd.clear();
+}
+```
+
 There are a number of additional examples available for reference as [how-to-code-samples](https://github.com/intel-iot-devkit/how-to-code-samples) on git hub
 
 ## Additional resources
